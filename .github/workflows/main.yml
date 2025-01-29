@@ -1,4 +1,4 @@
-name: CI/CD for react Todo 
+name: CI/CD for React Todo 
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-  # Build Job
   build:
     runs-on: ubuntu-latest
     steps:
@@ -19,36 +18,29 @@ jobs:
           node-version: 18.x
 
       - name: Install Dependencies
-        run: |
-          cd my-todo-app
-          npm install
+        run: npm install  # No need to cd into a folder
 
       - name: Build Project
-        run: |
-          cd my-todo-app
-          npm run build
+        run: npm run build  # No need to cd into a folder
 
       - name: Upload artifact to enable deployment
         uses: actions/upload-artifact@v3
         with:
-          name: poduction file
-          path: ./my-todo-app/build
+          name: production-file
+          path: ./build  # Default build directory
 
-  # Deploy Job
   deploy:
-   
     needs: build
-    
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: poduction file
-          path: ./my-todo-app/build
+          name: production-file
+          path: ./build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.KEY }} #this is the key of the access token
-          publish_dir: ./my-todo-app/build
+          github_token: ${{ secrets.KEY }}
+          publish_dir: ./build  # Deploy the correct directory
