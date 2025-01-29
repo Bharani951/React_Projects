@@ -20,19 +20,19 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          cd todo
+          cd my-todo-app
           npm install
 
       - name: Build Project
         run: |
-          cd todo
+          cd my-todo-app
           npm run build
 
       - name: Upload artifact to enable deployment
         uses: actions/upload-artifact@v3
         with:
           name: poduction file
-          path: ./todo/build
+          path: ./my-todo-app/build
 
   # Deploy Job
   deploy:
@@ -45,10 +45,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: poduction file
-          path: ./todo/build
+          path: ./my-todo-app/build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.KEY }} #this is the key of the access token
-          publish_dir: ./todo/build
+          publish_dir: ./my-todo-app/build
